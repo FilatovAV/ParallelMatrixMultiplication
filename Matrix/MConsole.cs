@@ -25,7 +25,7 @@ namespace Matrix
             {
                 ConsoleColor cfc = Console.ForegroundColor;
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"Введено недопустимое значение - {s}!");
+                Console.WriteLine($"Entered an invalid value - {s}!");
                 Console.ForegroundColor = cfc;
                 Console.ReadKey();
                 return false;

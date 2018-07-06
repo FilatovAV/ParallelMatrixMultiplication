@@ -13,21 +13,24 @@ namespace Matrix
             MConsole mConsole = new MConsole();
 
             int a = 0;
-            mConsole.GetInteger("Введите размер матрицы по 1 стороне:", ref a);
+            mConsole.GetInteger("Enter the size of the matrix on 1 side:", ref a);
             if (a>0)
             {
                 Math math = new Math(a);
                 int[,] matrixResult = math.MatrixMult(math.matrix1, math.matrix2);
 
-                math.PrintMatrix(math.matrix1, "\nМатрица №1");
-                math.PrintMatrix(math.matrix2, "\nМатрица №2");
-                math.PrintMatrix(matrixResult, "\nПроизведение матриц №1 и №2");
+                math.PrintMatrix(math.matrix1, "\nMatrix №1");
+                math.PrintMatrix(math.matrix2, "\nMatrix №2");
+                math.PrintMatrix(matrixResult, "\nMatrix multiplication №1, №2");
+
+                Console.WriteLine($"\nTime elapsed: {math.timeElapsed}");
             }
             else
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Размер матрицы должен быть больше 0.");
+                Console.WriteLine("The size of the matrix must be greater than 0.");
             }
+
 
             Console.ReadKey();
         }

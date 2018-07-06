@@ -15,7 +15,12 @@ namespace Matrix
         public readonly int[,] matrix2;
         public int[,] matrixResult;
 
+        public TimeSpan timeElapsed {get;set;}
+
         static Random rnd = new Random();
+
+        DateTime ts;
+        DateTime te;
 
         /// <summary>
         /// Конструктор формирует 2 матрицы с указаным размером (квадрат). 
@@ -47,20 +52,53 @@ namespace Matrix
         /// <param name="matrix2"></param>
         public int[,] MatrixMult(int[,] matrix1, int[,] matrix2)
         {
+            ts = DateTime.Now;
+
             //строки результирующей матрицы
-            for (int iLine = 0; iLine < mLen; iLine++)
-            {
-                Parallel.For(0, mLen, (i) =>
-                                            {
-                                                for (int iIncrement = 0; iIncrement < mLen; iIncrement++)
-                                                {
-                                                    matrixResult[iLine, i] +=
-                                                    matrix1[iLine, iIncrement] * matrix2[iIncrement, i];
-                                                }
-                                            }
-                );
-            }
+            //for (int iLine = 0; iLine < mLen; iLine++)
+            //{
+            //    Parallel.For(0, mLen, (i) =>
+            //        {
+            //            for (int iIncrement = 0; iIncrement < mLen; iIncrement++)
+            //            {
+            //                matrixResult[iLine, i] +=
+            //                matrix1[iLine, iIncrement] * matrix2[iIncrement, i];
+            //            }
+            //        }
+            //    );
+            //}
+            //return matrixResult;
+
+            //for (int line = 0; line < mLen; line++)
+            //{
+            //    Parallel.For(0, mLen, i => Multiply(matrixResult, i, line, mLen));
+            //}
+            //timeElapsed = DateTime.Now - ts;
+            //return matrixResult;
+
+            //++
+            //Parallel.For(0, mLen, i => MatrixGo(i));
+            //Наиболее стабильное по производительности решение
+            //когда мы создаем анонимный метод
+            Parallel.For(0, mLen, iline => {
+                Parallel.For(0, mLen, i => Multiply(matrixResult, i, iline, mLen));
+            });
+            timeElapsed = DateTime.Now - ts;
             return matrixResult;
+            //++
+        }
+
+        private void Multiply(int[,] result, int i, int line, int len)
+        {
+            for (int j = 0; j < len; j++)
+            {
+                result[line, i] += matrix1[line, j] * matrix2[j, i];
+            }
+        }
+
+        private void MatrixGo(int line)
+        {
+            Parallel.For(0, mLen, i => Multiply(matrixResult, i, line, mLen));
         }
 
         /// <summary>
